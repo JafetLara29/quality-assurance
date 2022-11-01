@@ -24,7 +24,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
     
 </head>
-<body class="public-body">
+<body class="admin-body">
     @php
         $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
     @endphp
@@ -121,9 +121,9 @@
         <div id="message">
             
         </div>
-        @if (strpos($url,'/login') == false && strpos($url,'/register') == false)
+        {{-- @if (strpos($url,'/login') == false && strpos($url,'/register') == false)
             <h1 class="display-4 mb-5 text-center title shadow text-light">Quality Assurance</h1>
-        @endif
+        @endif --}}
         
         <div class="shadow">
             @yield('content')

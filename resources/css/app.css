@@ -1,3 +1,15 @@
+.public-body{
+    height: 100vh;
+    background-image: url('../../storage/app/public/loginImages/image4.jpg');
+    background-size: cover;
+    background-position: center;
+}
+.admin-body{
+    height: 100vh;
+    background-image: url('../../storage/app/public/loginImages/image4.jpg');
+    background-size: auto;
+    background-position: center;
+}
 .navbar{
     /* background: darkcyan!important; */
     background-color: rgba(0,0,0,0.6) !important;
@@ -12,12 +24,6 @@
     
     background: darkcyan;
     color: aliceblue;
-}
-body{
-    height: 100vh;
-    background-image: url('../../storage/app/public/loginImages/image4.jpg');
-    background-size: cover;
-    background-position: center;
 }
 .login-card{
     background-color: rgba(0,0,0,0.6) !important;

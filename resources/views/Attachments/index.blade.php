@@ -1,4 +1,4 @@
-@extends('layouts.home')
+@extends('layouts.adminhome')
 @section('content')
     {{-- <h1 class="display-4 mb-5 text-center">QRM-Quality Assurance</h1> --}}
     
@@ -8,19 +8,19 @@
         <input type="hidden" name="id" value="{{$criterion->functionality->id}}">
         <input class="btn btn-info text-light" type="submit" value="Volver a los criterios">
     </form>
-    <div class="card border-dark bg-light">
-        <div class="card-header bg-secondary text-light">
+    <div class="card border-dark login-card">
+        <div class="card-header text-light">
             <h2 class="display-5">Adjuntos</h2>
         </div>
         <div class="row align-items-center p-2">
             <div style="max-width:350px!important; width:100%!important;" class="col-2">
                 {{-- Add --}}
-                <h3 class="display-6">Agregar</h3>
+                <h3 class="display-6 text-light">Agregar</h3>
                 <form id="add-attachment-form" action="{{route('attachments.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="criterionId" value="{{$criterion->id}}">
                     <div class="mb-3">
-                        Seleccione la imagen que desea registrar
+                        <p class="text-light">Seleccione la imagen que desea registrar</p>
                         <input class="form-control" type="file" name="image" id="image">
                     </div>
                     <div class="mb-3">
@@ -66,7 +66,7 @@
                 </form>
             </div>
             <div class="col">
-                <div class="table-responsive">
+                <div class="table-responsive text-light">
                     <table id="attachmentTable" class="table table-sm table-hover table-borderless table-primary align-middle">
                         <caption>Tabla de adjuntos de el criterio de aceptación</caption>
                         <thead class="table-light">

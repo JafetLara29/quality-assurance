@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card login-card shadow">
                 <div class="card-header text-center">{{ __('Login') }}</div>
-
+                <div></div>
                 <div class="card-body align-items-center">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf

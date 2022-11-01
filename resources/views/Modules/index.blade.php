@@ -1,4 +1,4 @@
-@extends('layouts.home')
+@extends('layouts.adminhome')
 @section('content')
     {{-- <h1 class="display-4 mb-5 text-center">QRM-Quality Assurance</h1> --}}
     
@@ -118,7 +118,7 @@
                     'colvis',
                 ],
                 columnDefs: [ {
-                    targets: -1,
+                    // targets: -1,
                     visible: false,
                 } ]
             });

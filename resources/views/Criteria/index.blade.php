@@ -1,4 +1,4 @@
-@extends('layouts.home')
+@extends('layouts.adminhome')
 @section('content')
     {{-- <h1 class="display-4 mb-5 text-center">QRM-Quality Assurance</h1> --}}
     
@@ -8,14 +8,14 @@
         <input type="hidden" name="id" value="{{$functionality->module->id}}">
         <input class="btn btn-info text-light" type="submit" value="Volver a las funcionalidades">
     </form>
-    <div class="card border-dark bg-light">
-        <div class="card-header bg-secondary text-light">
+    <div class="card border-dark login-card">
+        <div class="card-header text-light">
             <h2 class="display-5">Control de criterios de aceptación</h2>
         </div>
         <div class="row align-items-center p-3">
             <div style="max-width:300px!important; width:100%!important;" class="col-4">
                 {{-- Add --}}
-                <h3 class="display-6">Agregar</h3>
+                <h3 class="display-6 text-light">Agregar</h3>
                 <form id="add-criterion-form" action="{{route('criteria.store')}}" method="POST">
                     @csrf
                     <input type="hidden" name="functionalityId" value="{{$functionality->id}}">
@@ -63,7 +63,7 @@
                 </form>
             </div>
             <div class="col">
-                <div class="table-responsive">
+                <div class="table-responsive text-light">
                     {{-- style="width:100%" --}}
                     <table style="width:90%" id="functionalityTable" class="table table-sm table-hover table-borderless table-primary align-middle">
                         <caption>Tabla de criterios de aceptación</caption>
@@ -177,7 +177,7 @@
                             'colvis',
                         ],
                         columnDefs: [ {
-                            targets: -1,
+                            // targets: -1,
                             visible: false
                         } ]
                     });   
