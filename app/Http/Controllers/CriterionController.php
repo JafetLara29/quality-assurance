@@ -6,6 +6,7 @@ use App\Models\Criterion;
 use App\Http\Requests\StoreCriterionRequest;
 use App\Http\Requests\UpdateCriterionRequest;
 use App\Models\Functionality;
+use App\Models\User;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,8 +25,12 @@ class CriterionController extends Controller
     {
         //Obtenemos el modulo por medio del id buscado
         $functionality = Functionality::findOrFail($_GET['id']); 
+         // Obtenemos la lista de usuarios para hacer asignar responsable
+         $users = User::all();
+         
         return view('criteria.index')->with([
-            'functionality'=>$functionality
+            'functionality'=>$functionality,
+            'users' => $users,
         ]);
     }
 

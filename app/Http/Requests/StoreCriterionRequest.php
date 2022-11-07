@@ -27,6 +27,7 @@ class StoreCriterionRequest extends FormRequest
             'scenary' => ['required', 'max:255'],
             'description' => ['required', 'max:1000'],
             'state' => ['required'],
+            'user_id' => ['required'],
         ];
     }
 
@@ -38,6 +39,7 @@ class StoreCriterionRequest extends FormRequest
             'scenary.max' => 'El escenario no puede ser mayor a :max caracteres.',
             'description.max' => 'La descripción no puede ser mayor a :max caracteres.',
             'state.required' => 'Debe seleccionar un estado.',
+            'user_id.required' => 'Debe seleccionar un encargado para este criterio.',
         ];
     } 
 }

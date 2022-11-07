@@ -34,6 +34,14 @@
                       </select>
                     </div>
                     <div class="mb-3">
+                        <select class="form-control" name="user_id" id="user_id">
+                            <option value="Seleccionar">Seleccionar responsable</option>
+                            @foreach ($users as $user)
+                                <option value="{{$user->id}}">{{$user->name}} ({{$user->type}})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <input class="btn btn-success btn-sm" type="button" onclick="save_criterion()" value="Agregar">
                     </div>
                 </form>
@@ -57,6 +65,14 @@
                       </select>
                     </div>
                     <div class="mb-3">
+                        <select class="form-control" name="user_id" id="user_id">
+                            <option value="Seleccionar">Seleccionar responsable</option>
+                            @foreach ($users as $user)
+                                <option value="{{$user->id}}">{{$user->name}} ({{$user->type}})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <input class="btn btn-warning btn-sm" type="button" onclick="edit_criterion()" value="Guardar cambios">
                         <input class="btn btn-dark btn-sm" type="button" onclick="setEditForm('', '', '', '', '')" value="Cancelar">
                     </div>
@@ -65,12 +81,13 @@
             <div class="col">
                 <div class="table-responsive text-light">
                     {{-- style="width:100%" --}}
-                    <table style="width:90%" id="functionalityTable" class="table table-sm table-hover table-borderless table-primary align-middle">
+                    <table style="width:90%" id="functionalityTable" class="table table-sm table-borderless align-middle text-light">
                         <caption>Tabla de criterios de aceptación</caption>
-                        <thead class="table-light">
+                        <thead class="text-light">
                             <tr>
                                 <th>Escenario</th>
                                 <th>Estado</th>
+                                <th>Encargado</th>
                                 <th>Comentarios</th>
                                 <th>Acciones</th>
                             </tr>
@@ -104,10 +121,13 @@
                 dataType: "json",
                 success: function (response) {
                     var rows = "";
+                    var user;
                     for(let i = 0; i < response.length; i++){
-                        rows += '<tr class="table-info">' +
+                        user = response[i]["user"];
+                        rows += '<tr class="text-light">' +
                                     '<td>'+response[i]["scenary"]+'</td>' +
-                                        ((response[i]["state"] == "Correcto") ? '<td class="text-succes"><span class="visually-hidden">Correcto</span><ion-icon size="large" name="checkmark-circle-outline"></ion-icon></td>' : '<td class="text-danger"><span class="visually-hidden">Defectuoso</span><ion-icon size="large" name="close-circle-outline"></ion-icon></td>') +
+                                        ((response[i]["state"] == "Correcto") ? '<td class="text-success"><span class="visually-hidden">Correcto</span><ion-icon size="large" name="checkmark-circle-outline"></ion-icon></td>' : '<td class="text-danger"><span class="visually-hidden">Defectuoso</span><ion-icon size="large" name="close-circle-outline"></ion-icon></td>') +
+                                    '<td>'+user["name"]+'</td>' +
                                     '<td>'+response[i]["description"]+'</td>' +
                                     '<td class="col-3">' +
                                         '<div class="d-flex w-100 btn-group" role="group" aria-label="Basic example">' +
@@ -118,7 +138,7 @@
                                                     'Adj.' +
                                                 '</button>' +
                                             '</form>' +
-                                            '<button type="button" class="btn btn-warning btn-sm" onclick="setEditForm(\'edit\', \''+response[i]["id"]+'\', \''+response[i]["scenary"]+'\', \''+response[i]["description"]+'\', \''+response[i]["state"]+'\')">' +
+                                            '<button type="button" class="btn btn-warning btn-sm" onclick="setEditForm(\'edit\', \''+response[i]["id"]+'\', \''+response[i]["scenary"]+'\', \''+response[i]["description"]+'\', \''+response[i]["state"]+'\', \''+user["id"]+'\')">' +
                                                 'Editar' +
                                             '</button>' +
                                             '<form id="delete_form'+response[i]["id"]+'" action="{{route("criteria.destroy", ["criterion"=>'+response[i]["id"]+'])}}" method="post">' +
@@ -291,7 +311,7 @@
                 }
             });
         }
-        function setEditForm(formTo, id, scenary, description, state){
+        function setEditForm(formTo, id, scenary, description, state, user){
             if(formTo == 'edit'){
                 // Cambiamos visibilidad de formularios
                 document.getElementById('add-criterion-form').style.setProperty('display', 'none');
@@ -301,6 +321,7 @@
                 $('#edit-criterion-form #scenary').val(scenary);
                 $('#edit-criterion-form #description').val(description);
                 $('#edit-criterion-form #state').val(state);
+                $('#edit-criterion-form #user_id').val(user);
                 $('#edit-criterion-form #id').val(id);
     
                 // Activamos el action para enviarlo con el id correspondiente
@@ -314,7 +335,7 @@
                 $('#edit-criterion-form #name').val('');
                 $('#edit-criterion-form #description').val('');
                 $('#edit-criterion-form #state').val('');
-    
+                $('#edit-functionality-form #user_id').val('');
             }
 
         }

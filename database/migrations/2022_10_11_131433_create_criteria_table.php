@@ -19,9 +19,11 @@ return new class extends Migration
             $table->string('description', 500);
             $table->string('state');
             $table->bigInteger('functionality_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();//Responsable
             $table->timestamps();
 
             $table->foreign('functionality_id')->references('id')->on('functionalities');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

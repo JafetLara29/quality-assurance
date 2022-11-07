@@ -14,8 +14,9 @@ class Functionality extends Model
         'name',
         'description',
         'state',
+        'user_id',
     ];
-    protected $appends = ['percent'];
+    protected $appends = ['percent', 'user'];//user: encargado
 
     //Una funcionalidad pertenece a un modulo
     public function module(){
@@ -24,6 +25,10 @@ class Functionality extends Model
 
     public function criteria(){
         return $this->hasMany(Criterion::class);
+    }
+
+    public function user(){//Una funcionalidad pertenece a un usuario
+        return $this->belongsTo(User::class);
     }
 
     public function getPercentAttribute(){
@@ -47,5 +52,11 @@ class Functionality extends Model
         }
         
         return round($percent, 2);
+    }
+
+    public function getUserAttribute(){//Obtener encargado, lo debemos hacer así porque en js no podemos llamar al objeto user y utilizarlo
+        $user = $this->user();
+        $user = $user->get();
+        return $user[0];
     }
 }

@@ -44,9 +44,9 @@
             <div class="col">
                 <div class="table-responsive text-light">
                     {{-- style="width:100%" --}}
-                    <table style="width:100%" id="modulesTable" class="table table-sm table-hover table-borderless table-primary align-middle">
+                    <table style="width:100%" id="modulesTable" class="table table-sm table-borderless align-middle text-light">
                         <caption>Tabla de modulos a testear</caption>
-                        <thead class="table-light">
+                        <thead class="text-light">
                             <tr>
                                 <th>Nombre</th>
                                 <th>Encargado</th>
@@ -133,7 +133,7 @@
                 success: function (response) {
                     var rows = "";
                     for(let i = 0; i < response.length; i++){
-                        rows += '<tr class="table-info">' +
+                        rows += '<tr class="text-light">' +
                                     '<td>'+response[i]["module"]+'</td>' +
                                     '<td>'+response[i]["author"]+'</td>' +
                                     '<td class="col-3">' +

@@ -27,6 +27,7 @@ class StoreFunctionalityRequest extends FormRequest
             'name' => ['required', 'max:255'],
             'description' => ['required', 'max:1000'],
             'state' => ['required'],
+            'user_id' => ['required'],
         ];
     }
 
@@ -37,6 +38,7 @@ class StoreFunctionalityRequest extends FormRequest
             'name.max' => 'El nombre de la funcionalidad no puede ser mayor a :max caracteres.',
             'description.max' => 'La descripción no puede ser mayor a :max caracteres.',
             'state.required' => 'Debe seleccionar un estado de funcionalidad.',
+            'user_id.required' => 'Debe seleccionar a un usuario encargado del módulo.',
             // 'state.in' => 'Debe seleccionar alguna de las siguientes opciones ":values".',
         ];
     }

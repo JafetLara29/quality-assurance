@@ -67,9 +67,9 @@
             </div>
             <div class="col">
                 <div class="table-responsive text-light">
-                    <table id="attachmentTable" class="table table-sm table-hover table-borderless table-primary align-middle">
+                    <table id="attachmentTable" class="table table-sm table-borderless align-middle text-light">
                         <caption>Tabla de adjuntos de el criterio de aceptación</caption>
-                        <thead class="table-light">
+                        <thead class="text-light">
                             <tr>
                                 <th>Archivo</th>
                                 {{-- <th>Tipo</th> --}}
@@ -79,7 +79,7 @@
                         </thead>
                         <tbody>
                             @foreach ($attachments as $attachment)
-                            <tr class="table-info">
+                            <tr class="text-light">
                                 {{-- <td><img src="{{asset($attachment->image)}}" width="50" height="50"/></td> --}}
                                 <td><a class="btn btn-success btn-sm" href="{{asset($attachment->image)}}" target="_blank">Ver</a></td>
                                 
@@ -179,7 +179,7 @@
                     
                     for(let i = 0; i < response.length; i++){
                         
-                        rows += '<tr class="table-info">' +
+                        rows += '<tr class="text-light">' +
                                     // '<td>'+response[i]["image"]+'</td>' +
                                     (response[i]["image"]).includes('image') == true ? '<td><img src="asset('+response[i]["image"]+')"/></td>' : '<td><a href="asset('+response[i]["image"]+'">Ver PDF</a></td>' +
                                     '<td>'+response[i]["type"]+'</td>' +

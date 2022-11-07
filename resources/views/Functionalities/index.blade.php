@@ -30,6 +30,14 @@
                       </select>
                     </div>
                     <div class="mb-3">
+                        <select class="form-control" name="user_id" id="user_id">
+                            <option value="Seleccionar">Seleccionar responsable</option>
+                            @foreach ($users as $user)
+                                <option value="{{$user->id}}">{{$user->name}} ({{$user->type}})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <input class="btn btn-success btn-sm" type="button" onclick="save_functionality()" value="Agregar módulo">
                     </div>
                 </form>
@@ -53,6 +61,14 @@
                       </select>
                     </div>
                     <div class="mb-3">
+                        <select class="form-control" name="user_id" id="user_id">
+                            <option value="Seleccionar">Seleccionar responsable</option>
+                            @foreach ($users as $user)
+                                <option value="{{$user->id}}">{{$user->name}} ({{$user->type}})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <input class="btn btn-warning btn-sm" type="button" onclick="edit_functionality()" value="Guardar cambios">
                         <input class="btn btn-dark btn-sm" type="button" onclick="setFunctionalityForm('', '', '', '', '')" value="Cancelar">
                     </div>
@@ -61,12 +77,13 @@
             <div style="max-width:950px!important; width:100%!important;" class="col-9">
                 <div class="table-responsive text-light">
                     {{-- style="width:100%" --}}
-                    <table id="functionalityTable" class="table table-sm table-hover table-borderless table-primary align-middle">
+                    <table id="functionalityTable" class="table table-sm table-borderless align-middle text-light">
                         <caption>Tabla de funcionalidades a testear</caption>
-                        <thead class="table-light">
+                        <thead class="text-light">
                             <tr>
                                 <th>Nombre</th>
                                 <th>Estado</th>
+                                <th>Encargado</th>
                                 <th>Comentarios</th>
                                 <th>Acciones</th>
                             </tr>
@@ -101,16 +118,18 @@
                 success: function (response) {
                     // console.log(response);
                     var rows = "";
-                    
+                    var user;
                     for(let i = 0; i < response.length; i++){
-                        rows += '<tr class="table-info">' +
+                        user = response[i]["user"];
+                        rows += '<tr class="text-light">' +
                                     '<td>'+response[i]["name"]+'</td>' +
                                         ((response[i]["state"] == "Correcto") ? '<td class="text-center p-2"><form action="{{route("criteria.index")}}" method="get"> @csrf <input type="hidden" name="id" value="'+response[i]["id"]+'"/> <button class="btn btn-success btn-sm position-relative" type="submit"><ion-icon name="checkmark-circle-outline"></ion-icon><span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-info">'+response[i]['percent']+'%</span></button></form></td>' : '<td class="text-center text-danger p-2"><form action="{{route("criteria.index")}}" method="get"> @csrf <input type="hidden" name="id" value="'+response[i]["id"]+'"/> <button class="btn btn-danger btn-sm shadow position-relative" type="submit"><ion-icon name="close-circle-outline"></ion-icon> <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-info">'+response[i]['percent']+'%</span> </button></form></td>') +
+                                    '<td>'+user["name"]+'</td>' +
                                     '<td>'+response[i]["description"]+'</td>' +
                                     '<td class="col-3">' +
                                         '<div class="d-flex w-100 btn-group" role="group" aria-label="Basic example">' +
                                             
-                                            '<button type="button" class="btn btn-warning btn-sm" onclick="setFunctionalityForm(\'edit\', \''+response[i]["id"]+'\', \''+response[i]["name"]+'\', \''+response[i]["description"]+'\', \''+response[i]["state"]+'\')">' +
+                                            '<button type="button" class="btn btn-warning btn-sm" onclick="setFunctionalityForm(\'edit\', \''+response[i]["id"]+'\', \''+response[i]["name"]+'\', \''+response[i]["description"]+'\', \''+response[i]["state"]+'\', \''+user["id"]+'\')">' +
                                                 'Editar' +
                                             '</button>' +
                                             '<form id="delete_form'+response[i]["id"]+'" action="{{route("modules.destroy", ["module"=>'+response[i]["id"]+'])}}" method="post">' +
@@ -285,7 +304,7 @@
                 }
             });
         }
-        function setFunctionalityForm(formTo, id, name, description, state){
+        function setFunctionalityForm(formTo, id, name, description, state, user){
             if(formTo == 'edit'){
                 // Cambiamos visibilidad de formularios
                 document.getElementById('add-functionality-form').style.setProperty('display', 'none');
@@ -295,6 +314,7 @@
                 $('#edit-functionality-form #name').val(name);
                 $('#edit-functionality-form #description').val(description);
                 $('#edit-functionality-form #state').val(state);
+                $('#edit-functionality-form #user_id').val(user);
                 $('#edit-functionality-form #id').val(id);
     
                 // Activamos el action para enviarlo con el id correspondiente
@@ -308,6 +328,7 @@
                 $('#edit-functionality-form #name').val('');
                 $('#edit-functionality-form #description').val('');
                 $('#edit-functionality-form #state').val('');
+                $('#edit-functionality-form #user_id').val('');
     
             }
 

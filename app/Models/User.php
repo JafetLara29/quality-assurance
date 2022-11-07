@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'type',
     ];
 
     /**
@@ -41,4 +42,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function functionalities(){//Un usuario tiene varias funcionalidades bajo su cargo
+        return $this->hasMany(Functionality::class);
+    }
+    public function criteria(){//Un usuario tiene varias funcionalidades bajo su cargo
+        return $this->hasMany(Criterion::class);
+    }
 }

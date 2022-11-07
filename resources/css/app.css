@@ -29,3 +29,11 @@
     background-color: rgba(0,0,0,0.6) !important;
     height: 100%;
 }
+thead{
+    background-color: rgba(0,0,0,0.3) !important;
+}
+tbody tr:hover{
+    background-color: rgba(0,0,0,0.4) !important;
+    color: white!important;
+        /* font-size: medium; */
+}

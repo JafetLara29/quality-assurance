@@ -6,6 +6,8 @@ use App\Models\Functionality;
 use App\Http\Requests\StoreFunctionalityRequest;
 use App\Http\Requests\UpdateFunctionalityRequest;
 use App\Models\Module;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class FunctionalityController extends Controller
@@ -22,17 +24,21 @@ class FunctionalityController extends Controller
     public function index()
     {
         //Obtenemos el modulo por medio del id buscado
-        $module = Module::findOrFail($_GET['id']); 
+        $module = Module::findOrFail($_GET['id']);
+        // Obtenemos la lista de usuarios para hacer asignar responsable
+        $users = User::all();
         return view('functionalities.index')->with([
-            'module'=>$module
+            'module'=>$module,
+            'users' => $users,
         ]);
     }
-
+    
     public function all(){
+        // $user = Auth::user();
         //Obtenemos el modulo por medio del id buscado
         $module = Module::findOrFail($_POST['moduleId']); 
         //Obtenemos las funcionalidades de este modulo
-        $functionalities = $module->functionalities;
+        $functionalities = $module->functionalities;//()->where('user_id', $user->id);
         // $functionality = $functionalities->get(1);
         // $criteria = $functionality->criteria;
         // dd($criteria);
