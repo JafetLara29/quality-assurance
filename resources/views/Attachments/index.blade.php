@@ -6,21 +6,21 @@
     <form action="{{route('criteria.index')}}" method="get">
         @csrf
         <input type="hidden" name="id" value="{{$criterion->functionality->id}}">
-        <input class="btn btn-info text-light" type="submit" value="Volver a los criterios">
+        <input class="btn btn-info" type="submit" value="Volver a los criterios">
     </form>
     <div class="card border-dark login-card">
         <div class="card-header text-light">
-            <h2 class="display-5">Adjuntos</h2>
+            <h2 data-aos="fade-right" data-aos-delay="500" class="display-5">Adjuntos</h2>
         </div>
         <div class="row align-items-center p-2">
             <div style="max-width:350px!important; width:100%!important;" class="col-2">
                 {{-- Add --}}
-                <h3 class="display-6 text-light">Agregar</h3>
-                <form id="add-attachment-form" action="{{route('attachments.store')}}" method="POST" enctype="multipart/form-data">
+                <h3 data-aos="fade-left" data-aos-delay="500" class="display-6 text-light">Agregar</h3>
+                <form data-aos="fade-up" data-aos-delay="800" id="add-attachment-form" action="{{route('attachments.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="criterionId" value="{{$criterion->id}}">
                     <div class="mb-3">
-                        <p class="text-light">Seleccione la imagen que desea registrar</p>
+                        <p class="text-light">Seleccione el archivo que desea registrar</p>
                         <input class="form-control" type="file" name="image" id="image">
                     </div>
                     <div class="mb-3">
@@ -37,7 +37,7 @@
                       </select>
                     </div> --}}
                     <div class="mb-3">
-                        <input class="btn btn-success btn-sm" id="button-submit" type="submit" value="Agregar" disabled="disabled">
+                        <input class="btn text-light border-success btn-sm" id="button-submit" type="submit" value="Agregar" disabled="disabled">
                     </div>
                 </form>
                 {{-- Edit --}}
@@ -66,7 +66,7 @@
                 </form>
             </div>
             <div class="col">
-                <div class="table-responsive text-light">
+                <div data-aos="fade-up" data-aos-delay="1000" class="table-responsive text-light">
                     <table id="attachmentTable" class="table table-sm table-borderless align-middle text-light">
                         <caption>Tabla de adjuntos de el criterio de aceptación</caption>
                         <thead class="text-light">
@@ -81,7 +81,7 @@
                             @foreach ($attachments as $attachment)
                             <tr class="text-light">
                                 {{-- <td><img src="{{asset($attachment->image)}}" width="50" height="50"/></td> --}}
-                                <td><a class="btn btn-success btn-sm" href="{{asset($attachment->image)}}" target="_blank">Ver</a></td>
+                                <td><a class="btn text-light border-success btn-sm" href="{{asset($attachment->image)}}" target="_blank">Ver</a></td>
                                 
                                 {{-- <td>{{$attachment->type}}</td> --}}
                                 <td>{{$attachment->description}}</td>
@@ -94,7 +94,7 @@
                                             @method("DELETE")
                                             @csrf
                                             <input type="hidden" name="id" value="{{$attachment->id}}">
-                                            <input class="btn btn-danger btn-sm" type="submit" value="Eliminar">
+                                            <input class="btn text-light border-danger btn-sm" type="submit" value="Eliminar">
                                         </form>
                                     </div>
                                 </td>
@@ -192,7 +192,7 @@
                                             '<form id="delete_form'+response[i]["id"]+'" action="{{route("modules.destroy", ["module"=>'+response[i]["id"]+'])}}" method="post">' +
                                                 '@method("DELETE")' +
                                                 '<input type="hidden" name="id" value="'+response[i]["id"]+'">' +
-                                                '<input class="btn btn-danger btn-sm" type="button" value="Eliminar" onclick="delete_functionality('+response[i]["id"]+')">' +
+                                                '<input class="btn text-light border-danger btn-sm" type="button" value="Eliminar" onclick="delete_functionality('+response[i]["id"]+')">' +
                                             '</form>' +
                                         '</div>' +
                                     '</td>' +

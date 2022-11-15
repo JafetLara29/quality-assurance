@@ -12,13 +12,13 @@ class Criterion extends Model
         'scenary',
         'description',
         'state',
-        'user_id',
+        // 'user_id',
     ];
 
     protected $appends = ['user'];//user: encargado
 
-    public function user(){//Una criterio pertenece a un usuario
-        return $this->belongsTo(User::class);
+    public function users(){//Una criterio pertenece a uno o varios usuarios
+        return $this->belongsToMany(User::class);
     }
 
     public function functionality(){
@@ -29,8 +29,6 @@ class Criterion extends Model
     }
 
     public function getUserAttribute(){//Obtener encargado, lo debemos hacer así porque en js no podemos llamar al objeto user y utilizarlo
-        $user = $this->user();
-        $user = $user->get();
-        return $user[0];
+        return $this->users()->get();
     }
 }

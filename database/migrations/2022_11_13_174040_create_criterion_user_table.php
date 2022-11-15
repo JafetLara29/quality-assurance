@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('modules', function (Blueprint $table) {
-            $table->id();
-            $table->string('module');
-            // $table->bigInteger('user_id')->unsigned();
-            $table->timestamps();
+        Schema::create('criterion_user', function (Blueprint $table) {
+            $table->bigInteger('criterion_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
 
-            // $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('criterion_id')->references('id')->on('criteria');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modules');
+        Schema::dropIfExists('criterion_user');
     }
 };

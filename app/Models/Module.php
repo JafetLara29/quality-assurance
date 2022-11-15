@@ -10,11 +10,18 @@ class Module extends Model
     use HasFactory;
     protected $fillable = [
         'module',
-        'author',
     ];
-    
-    //Un modulo tiene muchas funcionalidades
+    protected $appends = ['user'];//user: encargado
+
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+
     public function functionalities(){
         return $this->hasMany(Functionality::class);
+    }
+
+    public function getUserAttribute(){
+        return $this->users()->get();
     }
 }

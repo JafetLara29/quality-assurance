@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\CriterionController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FunctionalityController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Xml\Source;
 
@@ -30,6 +32,10 @@ Route::post('criteria/all', [CriterionController::class, 'all'])->name('criteria
 
 Route::resource('attachments', AttachmentController::class)->only(['index', 'destroy', 'all', 'store']);
 Route::post('attachments/all', [AttachmentController::class, 'all'])->name('attachments.all');
+
+Route::resource('users', UserController::class);
+
+Route::resource('dashboards', DashboardController::class)->only(['index']);
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -44,9 +44,12 @@ class User extends Authenticatable
     ];
 
     public function functionalities(){//Un usuario tiene varias funcionalidades bajo su cargo
-        return $this->hasMany(Functionality::class);
+        return $this->belongsToMany(Functionality::class);
     }
     public function criteria(){//Un usuario tiene varias funcionalidades bajo su cargo
-        return $this->hasMany(Criterion::class);
+        return $this->belongsToMany(Criterion::class);
+    }
+    public function modules(){//Un usuario tiene varias funcionalidades bajo su cargo
+        return $this->belongsToMany(Module::class);
     }
 }

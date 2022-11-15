@@ -13,18 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('functionalities', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('description', 1000);
-            $table->string('state');
+        Schema::create('module_user', function (Blueprint $table) {
             $table->bigInteger('module_id')->unsigned();
-            // $table->bigInteger('user_id')->unsigned();//Responsable
-
-            $table->timestamps();
+            $table->bigInteger('user_id')->unsigned();
 
             $table->foreign('module_id')->references('id')->on('modules');
-            // $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('functionalities');
+        Schema::dropIfExists('module_user');
     }
 };

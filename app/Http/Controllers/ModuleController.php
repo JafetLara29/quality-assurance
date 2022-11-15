@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Module;
 use App\Http\Requests\StoreModuleRequest;
 use App\Http\Requests\UpdateModuleRequest;
+use App\Mail\ReviewFunctionalityMail;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 
 class ModuleController extends Controller
@@ -20,7 +23,11 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        return view('modules.index');
+        // Obtenemos la lista de usuarios para hacer asignar responsable
+        $users = User::all();
+        return view('modules.index')->with([
+            'users' => $users,
+        ]);
     }
 
      /**
@@ -53,6 +60,7 @@ class ModuleController extends Controller
     {
         // Guardamos el nuevo modulo en la base de  datos
         $module = Module::create($request->validated());
+        $module->users()->attach($request->user_id);
 
         // Si hubo algún dato faltante se va a mostrar el error en la vista, sino entonces llegará hasta este punto para retornar el mensaje de éxito
         return Response::json(array(   
@@ -92,6 +100,9 @@ class ModuleController extends Controller
     public function update(UpdateModuleRequest $request, Module $module)
     {
         $module->update($request->validated());
+        $module->users()->detach();
+        $module->users()->attach($request->user_id);
+
         return Response::json(array(
             'message' => 'success',
         ));
@@ -105,6 +116,7 @@ class ModuleController extends Controller
      */
     public function destroy(Module $module)
     {
+        $module->users()->detach();
         $module->delete();
         return Response::json(array(
             'message'=> 'success',

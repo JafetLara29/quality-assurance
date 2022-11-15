@@ -1,18 +1,18 @@
 @extends('layouts.adminhome')
 @section('content')
     {{-- <h1 class="display-4 mb-5 text-center">QRM-Quality Assurance</h1> --}}
-    <a class="btn btn-info text-light" href="{{route('modules.index')}}">Volver a lista de modulos</a>
+    <a class="btn btn-info" href="{{route('modules.index')}}">Volver a lista de modulos</a>
     
     {{-- Sección para control de modulos --}}
     <div class="card login-card border-dark">
         <div class="card-header text-light">
-            <h2 class="display-5">Control de funcionalidades</h2>
+            <h2 data-aos="fade-right" data-aos-delay="500" class="display-5">Control de funcionalidades</h2>
         </div>
         <div class="row align-items-center p-3">
             <div style="max-width:315px!important; width:100%!important;" class="col-3">
                 {{-- Add --}}
-                <h3 class="display-6 text-light">Agregar</h3>
-                <form id="add-functionality-form" action="{{route('functionalities.store')}}" method="POST">
+                <h3 data-aos="fade-left" data-aos-delay="500" class="display-6 text-light">Agregar</h3>
+                <form data-aos="fade-up" data-aos-delay="800" id="add-functionality-form" action="{{route('functionalities.store')}}" method="POST">
                     @csrf
                     <input type="hidden" name="moduleId" value="{{$module->id}}">
                     <div class="mb-3">
@@ -29,16 +29,37 @@
                         <option value="Defectuoso">Defectuoso</option>
                       </select>
                     </div>
-                    <div class="mb-3">
-                        <select class="form-control" name="user_id" id="user_id">
-                            <option value="Seleccionar">Seleccionar responsable</option>
-                            @foreach ($users as $user)
-                                <option value="{{$user->id}}">{{$user->name}} ({{$user->type}})</option>
-                            @endforeach
-                        </select>
+                    
+                    <button type="button" class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Seleccionar encargados
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header bg-secondary text-light">
+                                    <h5 class="modal-title" id="exampleModalLabel">Encargados del módulo</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    @foreach ($users as $user)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{$user->id}}" id="user_id{{$user->id}}" name="user_id[]">
+                                            <label class="form-check-label" for="user_id{{$user->id}}">
+                                                {{$user->name}}  ({{$user->type}})
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                
                     <div class="mb-3">
-                        <input class="btn btn-success btn-sm" type="button" onclick="save_functionality()" value="Agregar módulo">
+                        <input class="btn text-light border-success btn-sm" type="button" onclick="save_functionality()" value="Agregar módulo">
                     </div>
                 </form>
                 {{-- Edit --}}
@@ -58,16 +79,33 @@
                         <option>Seleccionar estado</option>
                         <option value="Correcto">Correcto</option>
                         <option value="Defectuoso">Defectuoso</option>
+                        <option value="Revisar">Revisar</option>
                       </select>
                     </div>
-                    <div class="mb-3">
-                        <select class="form-control" name="user_id" id="user_id">
-                            <option value="Seleccionar">Seleccionar responsable</option>
-                            @foreach ($users as $user)
-                                <option value="{{$user->id}}">{{$user->name}} ({{$user->type}})</option>
-                            @endforeach
-                        </select>
+                    
+                    <button type="button" class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                        Seleccionar encargados
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header bg-secondary text-light">
+                                    <h5 class="modal-title" id="exampleModalLabel">Encargados del módulo</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul class="list-group list-group-flush" id="edit-form-users-list">
+                                        
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="mb-3">
                         <input class="btn btn-warning btn-sm" type="button" onclick="edit_functionality()" value="Guardar cambios">
                         <input class="btn btn-dark btn-sm" type="button" onclick="setFunctionalityForm('', '', '', '', '')" value="Cancelar">
@@ -75,7 +113,7 @@
                 </form>
             </div>
             <div style="max-width:950px!important; width:100%!important;" class="col-9">
-                <div class="table-responsive text-light">
+                <div data-aos="fade-up" data-aos-delay="1000" class="table-responsive text-light">
                     {{-- style="width:100%" --}}
                     <table id="functionalityTable" class="table table-sm table-borderless align-middle text-light">
                         <caption>Tabla de funcionalidades a testear</caption>
@@ -83,7 +121,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Estado</th>
-                                <th>Encargado</th>
+                                <th>Encargado(s)</th>
                                 <th>Comentarios</th>
                                 <th>Acciones</th>
                             </tr>
@@ -119,27 +157,72 @@
                     // console.log(response);
                     var rows = "";
                     var user;
-                    for(let i = 0; i < response.length; i++){
-                        user = response[i]["user"];
-                        rows += '<tr class="text-light">' +
-                                    '<td>'+response[i]["name"]+'</td>' +
-                                        ((response[i]["state"] == "Correcto") ? '<td class="text-center p-2"><form action="{{route("criteria.index")}}" method="get"> @csrf <input type="hidden" name="id" value="'+response[i]["id"]+'"/> <button class="btn btn-success btn-sm position-relative" type="submit"><ion-icon name="checkmark-circle-outline"></ion-icon><span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-info">'+response[i]['percent']+'%</span></button></form></td>' : '<td class="text-center text-danger p-2"><form action="{{route("criteria.index")}}" method="get"> @csrf <input type="hidden" name="id" value="'+response[i]["id"]+'"/> <button class="btn btn-danger btn-sm shadow position-relative" type="submit"><ion-icon name="close-circle-outline"></ion-icon> <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-info">'+response[i]['percent']+'%</span> </button></form></td>') +
-                                    '<td>'+user["name"]+'</td>' +
-                                    '<td>'+response[i]["description"]+'</td>' +
-                                    '<td class="col-3">' +
-                                        '<div class="d-flex w-100 btn-group" role="group" aria-label="Basic example">' +
-                                            
-                                            '<button type="button" class="btn btn-warning btn-sm" onclick="setFunctionalityForm(\'edit\', \''+response[i]["id"]+'\', \''+response[i]["name"]+'\', \''+response[i]["description"]+'\', \''+response[i]["state"]+'\', \''+user["id"]+'\')">' +
-                                                'Editar' +
-                                            '</button>' +
-                                            '<form id="delete_form'+response[i]["id"]+'" action="{{route("modules.destroy", ["module"=>'+response[i]["id"]+'])}}" method="post">' +
-                                                '@method("DELETE")' +
-                                                '<input type="hidden" name="id" value="'+response[i]["id"]+'">' +
-                                                '<input class="btn btn-danger btn-sm" type="button" value="Eliminar" onclick="delete_functionality('+response[i]["id"]+')">' +
-                                            '</form>' +
-                                        '</div>' +
-                                    '</td>' +
-                                '</tr>';
+                    var modal;
+                    var checks;
+                    if(response.length > 0){
+                        for(let i = 0; i < response.length; i++){
+                            usersId = [];
+                            UsersData = '<ul class="list-group list-group-flush">';
+                            user = response[i]["user"];
+                            if(user.length == 0){
+                                checks = '<p class="text-danger">Sin usuarios encargados ligados</p>'
+                            }else{
+                                for(let j = 0; j < user.length; j++){
+                                    usersId.push(user[j]['id']);
+                                    UsersData += '<li class="list-group-item">'+user[j]['name']+'('+user[j]['type']+')</li>';
+                                }
+                            }
+                            UsersData += '</ul>';
+                            if(response[i]["state"] == "Correcto"){
+                                stateButton = '<td class="text-center p-2"><form action="{{route("criteria.index")}}" method="get"> @csrf <input type="hidden" name="id" value="'+response[i]["id"]+'"/> <button class="btn btn-success btn-sm position-relative" type="submit"><ion-icon name="checkmark-circle-outline"></ion-icon><span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-info">'+response[i]['percent']+'%</span></button></form></td>';
+                                
+                            }else{ 
+                                if(response[i]["state"] == "Defectuoso"){
+                                    stateButton = '<td class="text-center text-danger p-2"><form action="{{route("criteria.index")}}" method="get"> @csrf <input type="hidden" name="id" value="'+response[i]["id"]+'"/> <button class="btn btn-danger btn-sm shadow position-relative" type="submit"><ion-icon name="close-circle-outline"></ion-icon> <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-info">'+response[i]['percent']+'%</span> </button></form></td>';
+                                }else{
+                                    if(response[i]["state"] == "Revisar"){
+                                        stateButton = '<td class="text-center text-danger p-2"><form action="{{route("criteria.index")}}" method="get"> @csrf <input type="hidden" name="id" value="'+response[i]["id"]+'"/> <button class="btn btn-warning btn-sm shadow position-relative" type="submit"><ion-icon name="bug-outline"></ion-icon> <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-info">'+response[i]['percent']+'%</span> </button></form></td>';
+                                    }
+                                }
+                            }
+
+                            modal = '<button type="button" class="btn text-light border-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal'+i+'">Ver</button>'+
+                                    '<div class="modal fade" id="modal'+i+'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+                                        '<div class="modal-dialog">'+
+                                            '<div class="modal-content">'+
+                                                '<div class="modal-header bg-secondary">'+
+                                                    '<h5 class="modal-title" id="exampleModalLabel">Encargado(s)</h5>'+
+                                                    '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
+                                                '</div>'+
+                                                '<div class="modal-body text-center">'+
+                                                    UsersData+
+                                                '</div>'+
+                                                '<div class="modal-footer">'+
+                                                    '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>'+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>';
+                            rows += '<tr class="text-light">' +
+                                        '<td>'+response[i]["name"]+'</td>' +
+                                            stateButton +
+                                        '<td>'+modal+'</td>' +
+                                        '<td>'+response[i]["description"]+'</td>' +
+                                        '<td class="col-3">' +
+                                            '<div class="d-flex w-100 btn-group" role="group" aria-label="Basic example">' +
+                                                
+                                                '<button type="button" class="btn text-light border-warning btn-sm" onclick="setFunctionalityForm(\'edit\', \''+response[i]["id"]+'\', \''+response[i]["name"]+'\', \''+response[i]["description"]+'\', \''+response[i]["state"]+'\', \''+usersId+'\')">' +
+                                                    'Editar' +
+                                                '</button>' +
+                                                '<form id="delete_form'+response[i]["id"]+'" action="{{route("modules.destroy", ["module"=>'+response[i]["id"]+'])}}" method="post">' +
+                                                    '@method("DELETE")' +
+                                                    '<input type="hidden" name="id" value="'+response[i]["id"]+'">' +
+                                                    '<input class="btn text-light border-danger btn-sm" type="button" value="Eliminar" onclick="delete_functionality('+response[i]["id"]+')">' +
+                                                '</form>' +
+                                            '</div>' +
+                                        '</td>' +
+                                    '</tr>';
+                        }
                     }
                     $('#functionalityTable tbody').html(rows);
                     table = $('#functionalityTable').DataTable({
@@ -314,9 +397,38 @@
                 $('#edit-functionality-form #name').val(name);
                 $('#edit-functionality-form #description').val(description);
                 $('#edit-functionality-form #state').val(state);
-                $('#edit-functionality-form #user_id').val(user);
                 $('#edit-functionality-form #id').val(id);
-    
+                
+                // Proceso para llenar los select de usuarios
+                var users = @json($users);
+                var checks = '';
+                var flag = false;
+                for(let i = 0; i < users.length; i++){
+                    for(let j = 0; j < user.length; j++){
+                        if(users[i]['id'] == user[j]){
+                            checks += '<div class="form-check">'+
+                                        '<input class="form-check-input" type="checkbox" value="'+users[i]['id']+'" id="user_id'+users[i]['id']+'" name="user_id[]" checked>'+
+                                        '<label class="form-check-label" for="user_id'+users[i]['id']+'">'+
+                                            users[i]['name']+'('+users[i]['type']+')'+
+                                        '</label>'+
+                                    '</div>';
+                                    j = user.length;
+                                    flag = true;
+                        }
+                    }
+                    if(flag == false){
+                        checks += '<div class="form-check">'+
+                                        '<input class="form-check-input" type="checkbox" value="'+users[i]['id']+'" id="user_id'+users[i]['id']+'" name="user_id[]">'+
+                                        '<label class="form-check-label" for="user_id'+users[i]['id']+'">'+
+                                            users[i]['name']+'('+users[i]['type']+')'+
+                                        '</label>'+
+                                    '</div>';
+                    }else{
+                        flag = false;
+                    }
+                }
+                $('#edit-form-users-list').html(checks);
+                $('#edit-functionality-form #user_id').val(user);
                 // Activamos el action para enviarlo con el id correspondiente
                 document.getElementById('edit-functionality-form').action = "/functionalities/"+id;
             }else{

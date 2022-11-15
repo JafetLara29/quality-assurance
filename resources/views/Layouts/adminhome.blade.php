@@ -17,6 +17,10 @@
     {{-- Alerts --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    {{-- Animation css --}}
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    {{-- Charts --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <title>{{ config('app.name', 'Quality Assurance System') }}</title>
 
@@ -42,7 +46,7 @@
                 <ul class="navbar-nav me-auto">
                     @if (strpos($url, "/login") == false)
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="{{ url('/') }}">{{ __('Dashboard') }}</a>
+                            <a class="nav-link text-light" href="{{ route('dashboards.index') }}">{{ __('Dashboard') }}</a>
                         </li>
                     @endif
                 </ul>
@@ -59,9 +63,11 @@
                         @endif
                     @else
                         <li class="nav-item dropdown">
-                            <li class="nav-item">
-                                <a class="nav-link text-light" href="{{ route('register') }}">{{ __('Registrar usuario') }}</a>
-                            </li>
+                            @if ((Auth::user()->name) == "Administrator")
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" href="{{ route('users.index') }}">{{ __('Usuarios') }}</a>
+                                </li>
+                            @endif
                             <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>
@@ -143,6 +149,11 @@
     {{-- Icons --}}
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    {{-- Animations --}}
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     
+    <script>
+        AOS.init();
+    </script>
 </body>
 </html>

@@ -5,22 +5,46 @@
     {{-- Sección para control de modulos --}}
     <div class="card login-card text-light">
         <div class="card-header text-light">
-            <h2 class="display-5">Control de módulos</h2>
+            <h2 data-aos="fade-right" data-aos-delay="500" class="display-5">Control de módulos</h2>
         </div>
         <div class="row align-items-center p-3">
             <div style="max-width:300px!important; width:100%!important;" class="col-2">
                 {{-- Add --}}
-                <h3 class="display-6">Agregar</h3>
-                <form id="add-module-form" action="{{route('modules.store')}}" method="POST">
+                <h3 data-aos="fade-left" data-aos-delay="500" class="display-6">Agregar</h3>
+                <form data-aos="fade-up" data-aos-delay="800" id="add-module-form" action="{{route('modules.store')}}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <input class="form-control" type="text" name="module" id="module" placeholder="Ingrese el nombre del módulo">
                     </div>
-                    <div class="mb-3">
-                        <input class="form-control" type="text" name="author" id="author" placeholder="Ingrese el nombre del encargado">
+                    <button type="button" class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Seleccionar encargados
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header bg-secondary text-light">
+                                    <h5 class="modal-title" id="exampleModalLabel">Encargados del módulo</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-dark">
+                                    @foreach ($users as $user)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{$user->id}}" id="user_id{{$user->id}}" name="user_id[]">
+                                            <label class="form-check-label" for="user_id{{$user->id}}">
+                                                {{$user->name}}  ({{$user->type}})
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <input class="btn btn-success btn-sm" type="button" onclick="save_module()" value="Agregar módulo">
+                        <input class="btn text-light border-success btn-sm" type="button" onclick="save_module()" value="Agregar módulo">
                     </div>
                 </form>
                 {{-- Edit --}}
@@ -31,8 +55,27 @@
                     <div class="mb-3">
                         <input class="form-control" type="text" name="module" id="module" placeholder="Ingrese el nombre del módulo">
                     </div>
-                    <div class="mb-3">
-                        <input class="form-control" type="text" name="author" id="author" placeholder="Ingrese el nombre del encargado">
+                    <button type="button" class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                        Seleccionar encargados
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header bg-secondary text-light">
+                                    <h5 class="modal-title" id="exampleModalLabel">Encargados del módulo</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-dark">
+                                    <ul class="list-group list-group-flush text-dark" id="edit-form-users-list">
+                                        
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <input class="btn btn-warning btn-sm" type="button" onclick="edit_module()" value="Guardar cambios">
@@ -42,7 +85,7 @@
             </div>
             {{-- Table --}}
             <div class="col">
-                <div class="table-responsive text-light">
+                <div data-aos="fade-up" data-aos-delay="1000" class="table-responsive text-light">
                     {{-- style="width:100%" --}}
                     <table style="width:100%" id="modulesTable" class="table table-sm table-borderless align-middle text-light">
                         <caption>Tabla de modulos a testear</caption>
@@ -132,29 +175,64 @@
                 dataType: "json",
                 success: function (response) {
                     var rows = "";
+                    var user;
+                    var modal;
+                    var checks;
                     for(let i = 0; i < response.length; i++){
+                        usersId = [];
+                        UsersData = '<ul class="list-group list-group-flush">';
+                        user = response[i]["user"];
+                        if(user.length == 0){
+                            checks = '<p class="text-danger">Sin usuarios encargados ligados</p>'
+                        }else{
+                            for(let j = 0; j < user.length; j++){
+                                // Armamos json de usuarios para el formulario de editado
+                                usersId.push(user[j]['id']);
+                                UsersData += '<li class="list-group-item">'+user[j]['name']+'('+user[j]['type']+')</li>';
+                            }
+                        }
+                        UsersData += '</ul>';
+
+                        modal = '<button type="button" class="btn text-light border-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal'+i+'">Ver</button>'+
+                                '<div class="modal fade" id="modal'+i+'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+                                    '<div class="modal-dialog">'+
+                                        '<div class="modal-content">'+
+                                            '<div class="modal-header bg-secondary">'+
+                                                '<h5 class="modal-title" id="exampleModalLabel">Encargado(s)</h5>'+
+                                                '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
+                                            '</div>'+
+                                            '<div class="modal-body text-center">'+
+                                                UsersData+
+                                            '</div>'+
+                                            '<div class="modal-footer">'+
+                                                '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>'+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>';
+
                         rows += '<tr class="text-light">' +
                                     '<td>'+response[i]["module"]+'</td>' +
-                                    '<td>'+response[i]["author"]+'</td>' +
+                                    '<td>'+modal+'</td>' +
                                     '<td class="col-3">' +
                                         '<div class="d-flex w-100 btn-group" role="group" aria-label="Basic example">' +
                                             '<form action="{{route("functionalities.index")}}" method="get">' +
                                                 '@csrf' +
                                                 '<input type="hidden" name="id" value="'+response[i]["id"]+'"/>' +
-                                                '<button class="btn btn-info btn-sm position-relative px-3" type="submit">' +
+                                                '<button class="btn text-light border-info btn-sm position-relative px-3" type="submit">' +
                                                     'Ver' +
                                                     '<span class="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-danger">' +
                                                         response[i]['functionalities_count'] +
                                                     '</span>' +
                                                 '</button>' +
                                             '</form>' +
-                                            '<button type="button" class="btn btn-warning btn-sm" onclick="setModuleForm(\'edit\', \''+response[i]["id"]+'\', \''+response[i]["module"]+'\', \''+response[i]["author"]+'\')">' +
+                                            '<button type="button" class="btn text-light border-warning btn-sm" onclick="setModuleForm(\'edit\', \''+response[i]["id"]+'\', \''+response[i]["module"]+'\', \''+usersId+'\')">' +
                                                 'Editar' +
                                             '</button>' +
                                             '<form id="delete_form'+response[i]["id"]+'" action="{{route("modules.destroy", ["module"=>'+response[i]["id"]+'])}}" method="post">' +
                                                 '@method("DELETE")' +
                                                 '<input type="hidden" name="id" value="'+response[i]["id"]+'">' +
-                                                '<input class="btn btn-danger btn-sm" type="button" value="Eliminar" onclick="delete_module('+response[i]["id"]+')">' +
+                                                '<input class="btn text-light border-danger btn-sm" type="button" value="Eliminar" onclick="delete_module('+response[i]["id"]+')">' +
                                             '</form>' +
                                         '</div>' +
                                     '</td>' +
@@ -323,7 +401,7 @@
                 }
             });
         }
-        function setModuleForm(formTo, id, module, author){
+        function setModuleForm(formTo, id, module, user){
             if(formTo == 'edit'){
                 // Cambiamos visibilidad de formularios
                 document.getElementById('add-module-form').style.setProperty('display', 'none');
@@ -331,9 +409,38 @@
                 
                 //Seteamos los valores de los inputs 
                 $('#edit-module-form #module').val(module);
-                $('#edit-module-form #author').val(author);
                 $('#edit-module-form #id').val(id);
-    
+                
+                var users = @json($users);
+                var checks = '';
+                var flag = false;
+
+                for(let i = 0; i < users.length; i++){
+                    for(let j = 0; j < user.length; j++){
+                        if(users[i]['id'] == user[j]){
+                            checks += '<div class="form-check">'+
+                                        '<input class="form-check-input" type="checkbox" value="'+users[i]['id']+'" id="user_id'+users[i]['id']+'" name="user_id[]" checked>'+
+                                        '<label class="form-check-label" for="user_id'+users[i]['id']+'">'+
+                                            users[i]['name']+'('+users[i]['type']+')'+
+                                        '</label>'+
+                                    '</div>';
+                                    j = user.length;
+                                    flag = true;
+                        }
+                    }
+                    if(flag == false){
+                        checks += '<div class="form-check">'+
+                                        '<input class="form-check-input" type="checkbox" value="'+users[i]['id']+'" id="user_id'+users[i]['id']+'" name="user_id[]">'+
+                                        '<label class="form-check-label" for="user_id'+users[i]['id']+'">'+
+                                            users[i]['name']+'('+users[i]['type']+')'+
+                                        '</label>'+
+                                    '</div>';
+                    }else{
+                        flag = false;
+                    }
+                }
+                $('#edit-form-users-list').html(checks);
+                $('#edit-module-form #user_id').val(user);
                 // Activamos el action para enviarlo con el id correspondiente
                 document.getElementById('edit-module-form').action = "/modules/"+id;
             }else{

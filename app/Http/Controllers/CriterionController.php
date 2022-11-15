@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Criterion;
 use App\Http\Requests\StoreCriterionRequest;
 use App\Http\Requests\UpdateCriterionRequest;
+use App\Mail\ReviewFunctionalityMail;
 use App\Models\Functionality;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
@@ -64,7 +67,8 @@ class CriterionController extends Controller
         $functionality = Functionality::find($_POST['functionalityId']);
         $criterion = new Criterion($request->validated());
         $functionality->criteria()->save($criterion);
-    
+        $criterion->users()->attach($request->user_id);
+
         return Response::json(array(   
             'message' => 'success',
         ));
@@ -101,8 +105,15 @@ class CriterionController extends Controller
      */
     public function update(UpdateCriterionRequest $request, Criterion $criterion)
     {
-        // dd($request->validated());
+        if(($request->state) == 'Revisar'){
+            foreach($criterion->users as $user){
+                Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $criterion, "Criterion"));    
+            }
+        }
         $criterion->update($request->validated());
+        $criterion->users()->detach();
+        $criterion->users()->attach($request->user_id);
+
         return Response::json(array(
             'message' => 'success',
         ));
@@ -116,6 +127,7 @@ class CriterionController extends Controller
      */
     public function destroy(Criterion $criterion)
     {
+        $criterion->users()->detach();
         $criterion->delete();
         return Response::json(array(
             'message'=> 'success',

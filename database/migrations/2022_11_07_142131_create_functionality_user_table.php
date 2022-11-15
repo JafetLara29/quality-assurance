@@ -13,17 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('criteria', function (Blueprint $table) {
-            $table->id();
-            $table->string('scenary');
-            $table->string('description', 500);
-            $table->string('state');
+        Schema::create('functionality_user', function (Blueprint $table) {
             $table->bigInteger('functionality_id')->unsigned();
-            // $table->bigInteger('user_id')->unsigned();//Responsable
-            $table->timestamps();
+            $table->bigInteger('user_id')->unsigned();
 
             $table->foreign('functionality_id')->references('id')->on('functionalities');
-            // $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('criteria');
+        Schema::dropIfExists('functionality_user');
     }
 };

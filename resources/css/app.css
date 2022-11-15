@@ -29,6 +29,9 @@
     background-color: rgba(0,0,0,0.6) !important;
     height: 100%;
 }
+.dashboard-card{
+    background-color: rgba(0,0,0,0.6) !important;
+}
 thead{
     background-color: rgba(0,0,0,0.3) !important;
 }
@@ -36,4 +39,11 @@ tbody tr:hover{
     background-color: rgba(0,0,0,0.4) !important;
     color: white!important;
         /* font-size: medium; */
+}
+.btn:hover{
+    background-color: aqua!important;
+    color: black!important;
+}
+#myChart{
+    background-color: rgba(253, 253, 253, 0.6); max-height:100vh;
 }

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Functionality;
 use App\Http\Requests\StoreFunctionalityRequest;
 use App\Http\Requests\UpdateFunctionalityRequest;
+use App\Mail\ReviewFunctionalityMail;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 
 class FunctionalityController extends Controller
@@ -39,9 +41,8 @@ class FunctionalityController extends Controller
         $module = Module::findOrFail($_POST['moduleId']); 
         //Obtenemos las funcionalidades de este modulo
         $functionalities = $module->functionalities;//()->where('user_id', $user->id);
-        // $functionality = $functionalities->get(1);
-        // $criteria = $functionality->criteria;
-        // dd($criteria);
+        
+        // dd($functionalities[0]);
         return Response::json($functionalities);
     }
 
@@ -63,11 +64,11 @@ class FunctionalityController extends Controller
      */
     public function store(StoreFunctionalityRequest $request)
     {
-
         $module = Module::find($_POST['moduleId']);
         $functionality = new Functionality($request->validated());
         $module->functionalities()->save($functionality);
-
+        $functionality->users()->attach($request->user_id);
+        
         return Response::json(array(   
             'message' => 'success',
         ));
@@ -104,7 +105,15 @@ class FunctionalityController extends Controller
      */
     public function update(UpdateFunctionalityRequest $request, Functionality $functionality)
     {
+        if(($request->state) == 'Revisar'){
+            foreach($functionality->users as $user){
+                Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $functionality, "Functionality"));    
+            }
+        }
         $functionality->update($request->validated());
+        $functionality->users()->detach();
+        $functionality->users()->attach($request->user_id);
+
         return Response::json(array(
             'message' => 'success',
         ));
@@ -118,6 +127,7 @@ class FunctionalityController extends Controller
      */
     public function destroy(Functionality $functionality)
     {
+        $functionality->users()->detach();
         $functionality->delete();
         return Response::json(array(
             'message'=> 'success',

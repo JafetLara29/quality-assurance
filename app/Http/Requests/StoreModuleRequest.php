@@ -25,7 +25,7 @@ class StoreModuleRequest extends FormRequest
     {
         return [
             'module' => ['required', 'max:255'],
-            'author' => ['required', 'max:255'],
+            'user_id' => ['required'],
         ];
 
     }
@@ -33,10 +33,8 @@ class StoreModuleRequest extends FormRequest
     {
         return [
             'module.required' => 'El input de modulo es requerido',
-            'author.required' => 'El input de encargado es requerido',
             'module.max' => 'El nombre del módulo no puede ser mayor a :max caracteres.',
-            'author.max' => 'El nombre del encargado no puede ser mayor a :max caracteres.',
-
+            'user_id.required' => 'Debe seleccionar a un usuario encargado del módulo.',
         ];
     }
 }

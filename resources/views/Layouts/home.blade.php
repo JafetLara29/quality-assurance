@@ -64,6 +64,11 @@
                         @endif --}}
                     @else
                         <li class="nav-item dropdown">
+                            @if ((Auth::user()->name) == "Administrator")
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" href="{{ route('users.index') }}">{{ __('Usuarios') }}</a>
+                                </li>
+                            @endif
                             <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>

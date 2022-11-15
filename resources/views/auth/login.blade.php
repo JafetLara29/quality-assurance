@@ -1,7 +1,7 @@
-@extends('layouts.home')
+@extends('layouts.adminhome')
 
 @section('content')
-<div class="container login-container text-light">
+<div data-aos="fade-up" data-aos-delay="500" class="container login-container text-light">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card login-card shadow">
