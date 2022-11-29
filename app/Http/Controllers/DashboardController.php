@@ -23,7 +23,7 @@ class DashboardController extends Controller
         // Contadores de "Revisar"
         $functionalitiesRev = $functionalities->where('state', 'Revisar')->count();
         $criterionRev = $criterion->where('state', 'Revisar')->count();
-        return view('Dashboards.index')->with([
+        return view('dashboards.index')->with([
             'modules'=>$modulesCount,
             'functionalities'=>$functionalitiesCount,
             'criterion'=>$criterionCount,

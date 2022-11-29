@@ -6,7 +6,7 @@
 }
 .admin-body{
     height: 100vh;
-    background-image: url('../../storage/app/public/loginImages/image4.jpg');
+    /* background-image: url('../../storage/app/public/loginImages/image4.jpg'); */
     background-size: auto;
     background-position: center;
 }
