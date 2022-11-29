@@ -36,6 +36,8 @@ Route::post('attachments/all', [AttachmentController::class, 'all'])->name('atta
 Route::resource('users', UserController::class);
 
 Route::resource('dashboards', DashboardController::class)->only(['index']);
+Route::post('dashboards/{functionality}/functionalitystate', [DashboardController::class, 'changeFunctionalityState'])->name('dashboards.functionality.state');
+Route::post('dashboards/{criterion}/criterionstate', [DashboardController::class, 'changeCriterionState'])->name('dashboards.criterion.state');
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

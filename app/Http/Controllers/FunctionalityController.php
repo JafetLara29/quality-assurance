@@ -127,7 +127,13 @@ class FunctionalityController extends Controller
      */
     public function destroy(Functionality $functionality)
     {
-        $functionality->users()->detach();
+        $functionality->users()->detach();//Desligamos a los usuarios de la funcionalidad
+        $criteria = $functionality->criteria;//Extraemos los criterios ligados a la funcionalidad
+        foreach($criteria as $criterion){
+            $criterion->users()->detach();
+            $criterion->attachments()->delete();
+            $criterion->delete();
+        }
         $functionality->delete();
         return Response::json(array(
             'message'=> 'success',

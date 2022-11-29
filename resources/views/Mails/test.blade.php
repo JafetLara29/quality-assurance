@@ -32,7 +32,7 @@
                     <td>{{$data->scenary}}</td>
                 @endif
                 <td>{{$data->description}}</td>
-                <td>{{$data->state}}</td>
+                <td>Revisar</td>
             </tr>
         </tbody>
     </table>

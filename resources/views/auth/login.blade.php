@@ -1,4 +1,4 @@
-@extends('layouts.adminhome')
+@extends('layouts.home')
 
 @section('content')
 <div data-aos="fade-up" data-aos-delay="500" class="container login-container text-light">
@@ -10,10 +10,8 @@
                 <div class="card-body align-items-center">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-
                         <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Correo') }}</label>
-
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 

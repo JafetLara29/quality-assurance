@@ -114,57 +114,6 @@
         $(document).ready( function () {
             // Obtenemos los registro y los ponemos en la tabla
             getAllModules();
-
-            $('#functionalitiesTable').DataTable({
-                dom: 'Bfrtip',
-                stateSave: true,
-                pagingType: 'full_numbers',
-                scrollY: '200px',
-                scrollCollapse: true,
-                language: {
-                    lengthMenu: 'Mostrando _MENU_ filas por página',
-                    zeroRecords: 'Nada que mostrar',
-                    info: 'Página #_PAGE_ de _PAGES_',
-                    infoEmpty: 'No hay coincidencias',
-                    search: 'Buscar',
-                    infoFiltered: '(Filtrado de _MAX_ registros)',
-                },
-                buttons: [
-                    // 'copy',
-                    {
-                        extend: 'copy',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    // 'excel',
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    // 'pdf',
-                    {
-                        extend: 'pdf',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    // 'print',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'colvis',
-                ],
-                columnDefs: [ {
-                    // targets: -1,
-                    visible: false,
-                } ]
-            });
         } );
         function getAllModules(){
             $.ajax({
@@ -285,7 +234,7 @@
                             'colvis',
                         ],
                         columnDefs: [ {
-                            targets: -1,
+                            // targets: -1,
                             visible: false
                         } ]
                     });   

@@ -117,6 +117,17 @@ class ModuleController extends Controller
     public function destroy(Module $module)
     {
         $module->users()->detach();
+        $functionalities = $module->functionalities;
+        foreach($functionalities as $functionality){//Extraemos cada funcionalidad
+            $criteria = $functionality->criteria;//Obtenemos los criterios de la funcionalidad
+            foreach($criteria as $criterion){//Eliminamos cada adjunto ligado a cada criterio y desligamos de los usuarios responsables:
+                $criterion->users()->detach();
+                $criterion->attachments()->delete();
+                $criterion->delete();//Eliminamos cada criterio
+            }
+            $functionality->users()->detach();
+            $functionality->delete();//Eliminamos cada funcionalidad
+        }
         $module->delete();
         return Response::json(array(
             'message'=> 'success',

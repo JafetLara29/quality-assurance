@@ -128,6 +128,10 @@ class CriterionController extends Controller
     public function destroy(Criterion $criterion)
     {
         $criterion->users()->detach();
+        $attachments = $criterion->attachments;
+        foreach($attachments as $attachment){
+            $attachment->delete();
+        }
         $criterion->delete();
         return Response::json(array(
             'message'=> 'success',

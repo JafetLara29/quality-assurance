@@ -1,18 +1,20 @@
 .public-body{
     height: 100vh;
     background-image: url('../../storage/app/public/loginImages/image4.jpg');
+    background-color: white;
     background-size: cover;
     background-position: center;
 }
 .admin-body{
     height: 100vh;
-    /* background-image: url('../../storage/app/public/loginImages/image4.jpg'); */
-    background-size: auto;
+    /* background-image: url('../../storage/app/public/loginImages/background.png');
+    background-size: 20em;
     background-position: center;
+    background-repeat: no-repeat; */
+    background-color: #282c34;
 }
 .navbar{
-    /* background: darkcyan!important; */
-    background-color: rgba(0,0,0,0.6) !important;
+    background-color: rgba(0,255,255,0.2) !important;
 }
 .table-responsive{
     max-width: 930px;
@@ -26,11 +28,11 @@
     color: aliceblue;
 }
 .login-card{
-    background-color: rgba(0,0,0,0.6) !important;
+    background-color: rgba(0,255,255,0.2) !important;
     height: 100%;
 }
 .dashboard-card{
-    background-color: rgba(0,0,0,0.6) !important;
+    background-color: rgba(0,255,255,0.2) !important;
 }
 thead{
     background-color: rgba(0,0,0,0.3) !important;
@@ -45,5 +47,6 @@ tbody tr:hover{
     color: black!important;
 }
 #myChart{
-    background-color: rgba(253, 253, 253, 0.6); max-height:100vh;
+    background-color: rgba(0,255,255,0.2);
+    max-height:50vh;
 }

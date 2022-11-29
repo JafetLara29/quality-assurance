@@ -32,6 +32,7 @@
                                         @csrf
                                         @method('PUT')
                                         <select class="btn text-light bg-dark border-success @error('type') is-invalid @enderror" name="type" id="type{{$user->id}}" onchange="changeRole('{{$user->id}}')">
+                                            <option {{ $user->type == "Admin"?"Selected":"" }} value="Admin">Admin</option>
                                             <option {{ $user->type == "QA"?"Selected":"" }} value="QA">QA</option>
                                             <option {{ $user->type == "Developer"?"Selected":"" }} value="Developer">Developer</option>
                                             <option {{ $user->type == "Outsourcing"?"Selected":"" }} value="Outsourcing">Outsourcing</option>
@@ -58,7 +59,6 @@
         var table;
         $(document).ready( function () {
             $('#table').DataTable({
-                dom: 'Bfrtip',
                 stateSave: true,
                 pagingType: 'full_numbers',
                 scrollY: '200px',
@@ -70,42 +70,7 @@
                     infoEmpty: 'No hay coincidencias',
                     search: 'Buscar',
                     infoFiltered: '(Filtrado de _MAX_ registros)',
-                },
-                buttons: [
-                    // 'copy',
-                    {
-                        extend: 'copy',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    // 'excel',
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    // 'pdf',
-                    {
-                        extend: 'pdf',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    // 'print',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'colvis',
-                ],
-                columnDefs: [ {
-                    targets: -1,
-                    visible: false,
-                } ]
+                }
             });
         } );
 

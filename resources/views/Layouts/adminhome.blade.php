@@ -63,7 +63,7 @@
                         @endif
                     @else
                         <li class="nav-item dropdown">
-                            @if ((Auth::user()->name) == "Administrator")
+                            @if ((Auth::user()->type) == "Admin")
                                 <li class="nav-item">
                                     <a class="nav-link text-light" href="{{ route('users.index') }}">{{ __('Usuarios') }}</a>
                                 </li>
