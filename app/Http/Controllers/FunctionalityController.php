@@ -68,7 +68,14 @@ class FunctionalityController extends Controller
         $functionality = new Functionality($request->validated());
         $module->functionalities()->save($functionality);
         $functionality->users()->attach($request->user_id);
-        
+        // Informamos a los devs encargados:
+        if(($request->state) == 'Defectuoso'){
+            foreach($functionality->users as $user){
+                if($user->type == 'Developer'){
+                    Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $functionality, "Functionality"));    
+                }
+            }
+        }
         return Response::json(array(   
             'message' => 'success',
         ));
@@ -105,15 +112,25 @@ class FunctionalityController extends Controller
      */
     public function update(UpdateFunctionalityRequest $request, Functionality $functionality)
     {
+        // Informamos a los encargados de QA
         if(($request->state) == 'Revisar'){
             foreach($functionality->users as $user){
-                Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $functionality, "Functionality"));    
+                if($user->type == 'QA'){
+                    Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $functionality, "Functionality"));    
+                }
+            }
+        }else{
+            if(($request->state) == 'Defectuoso'){
+                foreach($functionality->users as $user){
+                    if($user->type == 'Developer'){ 
+                        Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $functionality, "Functionality"));    
+                    }
+                }
             }
         }
         $functionality->update($request->validated());
         $functionality->users()->detach();
         $functionality->users()->attach($request->user_id);
-
         return Response::json(array(
             'message' => 'success',
         ));

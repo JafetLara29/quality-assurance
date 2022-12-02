@@ -1,3 +1,9 @@
+.navbar-admin{
+    background-color: rgba(0,255,255,0.2) !important;
+}
+.navbar-public{
+    background-color: rgba(0,0,0,0.4) !important;
+}
 .public-body{
     height: 100vh;
     background-image: url('../../storage/app/public/loginImages/image4.jpg');
@@ -7,14 +13,7 @@
 }
 .admin-body{
     height: 100vh;
-    /* background-image: url('../../storage/app/public/loginImages/background.png');
-    background-size: 20em;
-    background-position: center;
-    background-repeat: no-repeat; */
     background-color: #282c34;
-}
-.navbar{
-    background-color: rgba(0,255,255,0.2) !important;
 }
 .table-responsive{
     max-width: 930px;
@@ -23,12 +22,12 @@
     border-left-width: 10px;
     border-left-color: gray;
     border-left-style: solid;
-    
     background: darkcyan;
     color: aliceblue;
 }
+
 .login-card{
-    background-color: rgba(0,255,255,0.2) !important;
+    background-color: rgba(0,0,0,0.4) !important;
     height: 100%;
 }
 .dashboard-card{

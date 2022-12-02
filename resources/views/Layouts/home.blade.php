@@ -32,7 +32,7 @@
     @php
         $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
     @endphp
-    <nav class="navbar navbar-expand-md navbar-light shadow">
+    <nav class="navbar navbar-expand-md navbar-light shadow navbar-public">
         <div class="container">
             <a class="navbar-brand text-light" href="{{ url('/') }}">
                 {{ config('app.name', 'Laravel') }}

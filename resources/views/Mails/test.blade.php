@@ -21,7 +21,6 @@
             <tr>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Estado</th>
             </tr>
         </thead>
         <tbody>
@@ -32,10 +31,9 @@
                     <td>{{$data->scenary}}</td>
                 @endif
                 <td>{{$data->description}}</td>
-                <td>Revisar</td>
             </tr>
         </tbody>
     </table>
-    <p>Observaciones hechas por: <strong>{{$QAUser->name}}</strong></p>
+    <p>Cambio de estado realizado por: <strong>{{$QAUser->name}}</strong></p>
 </body>
 </html>

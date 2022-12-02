@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserStorageRequest extends FormRequest
+class UpdateCriterionStateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,14 @@ class UserStorageRequest extends FormRequest
     public function rules()
     {
         return [
-            'type'=>['required'],
+            'state' => ['required'],
         ];
     }
-    
+
+    public function messages(){
+        return [
+            'state.required' => 'Debe seleccionar un estado para el criterio.',
+        ];
+    }
+
 }

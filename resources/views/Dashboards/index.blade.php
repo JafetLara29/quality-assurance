@@ -44,15 +44,15 @@
             <div class="card dashboard-card p-4">
                 <h1>Por revisar</h1>
                 <div class="row justify-content-center text-center">
-                    
-                    <div class="col-lg-5 border border-danger m-2">
+
+                    {{-- Columna para la tabla de funcionalidades --}}
+                    <div class="col-lg-5 border border-danger m-1">
                         {{-- Tabla --}}
                         <h3>Funcionalidades</h3>
                         <table class="table text-light" id="functionalities-table">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>Descripción</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -62,18 +62,51 @@
                                 @else
                                     @foreach ($functionalitiesRev as $functionality)
                                         <tr>
-                                            <td>{{$functionality->name}}</td>
-                                            <td>{{$functionality->description}}</td>
+                                            <td class="align-middle">{{$functionality->name}}</td>
                                             <td>
-                                                <form action="{{route('dashboards.functionality.state', ['functionality'=>$functionality->id])}}" method="post" id="form{{$functionality->id}}">
-                                                    @csrf
-                                                    {{-- <select class="btn text-light bg-dark border-success @error('type') is-invalid @enderror" name="state" id="state{{$functionality->id}}" onchange="changeState('{{$functionality->id}}')">
-                                                        <option {{ $functionality->state == "Correcto"?"Selected":"" }} value="Correcto">Correcto</option>
-                                                        <option {{ $functionality->state == "Defectuoso"?"Selected":"" }} value="Defectuoso">Defectuoso</option>
-                                                        <option {{ $functionality->state == "Revisar"?"Selected":"" }} value="Revisar">Revisar</option>
-                                                    </select> --}}
-                                                    <button type="submit" class="btn border-info text-light">Solucionado</button>
-                                                </form>
+                                                <button type="button" class="btn border-info text-light" data-bs-toggle="modal" data-bs-target="#modal{{$functionality->id}}">
+                                                    Ver
+                                                </button>
+                                                <div class="modal fade" id="modal{{$functionality->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-secondary">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <ul class="list-group">
+                                                                    <li class="list-group-item"><strong>Nombre:</strong> <br> {{$functionality->name}}</li>
+                                                                    <li class="list-group-item"><strong>Descripción:</strong> <br> {{$functionality->description}}</li>
+                                                                    <li class="list-group-item list-group-item-dark d-flex justify-content-center">
+                                                                        @if (Auth::user()->type == 'Developer')
+                                                                            <form action="{{route('dashboards.functionality.state', ['functionality'=>$functionality->id])}}" method="post" id="form{{$functionality->id}}" class="m-1">
+                                                                                @csrf
+                                                                                {{-- Manda a QA para que revise --}}
+                                                                                <input type="hidden" name="state" value="Revisar">
+                                                                                <button type="submit" class="btn btn-sm btn-success text-light">Solucionado</button>
+                                                                            </form>
+                                                                        @else
+                                                                            {{-- QA y Admin --}}
+                                                                            <form action="{{route('dashboards.functionality.state', ['functionality'=>$functionality->id])}}" method="post" id="form{{$functionality->id}}" class="m-1">
+                                                                                @csrf
+                                                                                {{-- Correcto --}}
+                                                                                <input type="hidden" name="state" value="Correcto">
+                                                                                <button type="submit" class="btn btn-sm btn-success text-light">Solucionado</button>
+                                                                            </form>
+                                                                            <form action="{{route('dashboards.functionality.state', ['functionality'=>$functionality->id])}}" method="post" id="form{{$functionality->id}}" class="m-1">
+                                                                                @csrf
+                                                                                {{-- Manda como Defectuoso y notifica al dev --}}
+                                                                                <input type="hidden" name="state" value="Defectuoso">
+                                                                                <button type="submit" class="btn btn-sm btn-danger text-light">Defectuoso</button>
+                                                                            </form>
+                                                                        @endif
+                                                                    </li>
+                                                                  </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>{{-- Modal end--}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -82,14 +115,14 @@
                         </table>
                     </div>
 
-                    <div class="col-lg-5 border border-danger m-2">
+                    {{-- Columna para la tabla de criterios --}}
+                    <div class="col-lg-5 border border-danger m-1">
                         {{-- Tabla --}}
                         <h3>Criterios</h3>
                         <table class="table text-light" id="criteria-table">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>Descripción</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -99,13 +132,51 @@
                                 @else
                                     @foreach ($criterionRev as $criterion)
                                         <tr>
-                                            <td>{{$criterion->name}}</td>
-                                            <td>{{$criterion->description}}</td>
+                                            <td>{{$criterion->scenary}}</td>
                                             <td>
-                                                <form action="{{route('dashboards.criterion.state', ['criterion'=>$criterion->id])}}" method="post">
-                                                    @csrf
-                                                    <button type="submit" class="btn border-info text-light">Solucionado</button>
-                                                </form>
+                                                <button type="button" class="btn border-info text-light" data-bs-toggle="modal" data-bs-target="#modalC{{$criterion->id}}">
+                                                    Ver
+                                                </button>
+                                                <div class="modal fade" id="modalC{{$criterion->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-secondary">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <ul class="list-group">
+                                                                    <li class="list-group-item"><strong>Nombre:</strong> <br> {{$criterion->scenary}}</li>
+                                                                    <li class="list-group-item"><strong>Descripción:</strong> <br> {{$criterion->description}}</li>
+                                                                    <li class="list-group-item list-group-item-dark d-flex justify-content-center">
+                                                                        @if (Auth::user()->type == 'Developer')
+                                                                            <form action="{{route('dashboards.criterion.state', ['criterion'=>$criterion->id])}}" method="post">
+                                                                                @csrf
+                                                                                {{-- Manda a QA para que revise --}}
+                                                                                <input type="hidden" name="state" value="Revisar">
+                                                                                <button type="submit" class="btn btn-sm btn-success text-light">Solucionado</button>
+                                                                            </form>
+                                                                        @else
+                                                                            {{-- QA y Admin --}}
+                                                                            <form action="{{route('dashboards.criterion.state', ['criterion'=>$criterion->id])}}" method="post">
+                                                                                @csrf
+                                                                                {{-- Correcto --}}
+                                                                                <input type="hidden" name="state" value="Correcto">
+                                                                                <button type="submit" class="btn btn-sm btn-success text-light m-1">Solucionado</button>
+                                                                            </form>
+                                                                            <form action="{{route('dashboards.criterion.state', ['criterion'=>$criterion->id])}}" method="post">
+                                                                                @csrf
+                                                                                {{-- Manda como Defectuoso y notifica al dev --}}
+                                                                                <input type="hidden" name="state" value="Defectuoso">
+                                                                                <button type="submit" class="btn btn-sm btn-danger text-light m-1">Defectuoso</button>
+                                                                            </form>
+                                                                        @endif
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>{{-- Modal end--}}
                                             </td>
                                         </tr>
                                     @endforeach

@@ -68,7 +68,14 @@ class CriterionController extends Controller
         $criterion = new Criterion($request->validated());
         $functionality->criteria()->save($criterion);
         $criterion->users()->attach($request->user_id);
-
+        // Informamos a los devs encargados:
+        if(($request->state) == 'Defectuoso'){
+            foreach($criterion->users as $user){
+                if($user->type == 'Developer'){
+                    Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $functionality, "Criterion"));    
+                }
+            }
+        }
         return Response::json(array(   
             'message' => 'success',
         ));
@@ -107,7 +114,17 @@ class CriterionController extends Controller
     {
         if(($request->state) == 'Revisar'){
             foreach($criterion->users as $user){
-                Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $criterion, "Criterion"));    
+                if($user->type == 'QA'){
+                    Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $criterion, "Criterion"));    
+                }
+            }
+        }else{
+            if(($request->state) == 'Defectuoso'){
+                foreach($criterion->users as $user){
+                    if($user->type == 'Developer'){
+                        Mail::to($user->email)->send(new ReviewFunctionalityMail($user, Auth::user(), $criterion, "Criterion"));    
+                    }
+                }
             }
         }
         $criterion->update($request->validated());

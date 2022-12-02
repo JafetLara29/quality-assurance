@@ -40,12 +40,14 @@
                                     </form>
                                 </td>
                                 <td>
+                                    <a class="btn btn-warning" href="{{ route('users.edit', ['user'=> $user->id]) }}">Editar</a>
                                     <form action="{{route("users.destroy", ["user" => $user->id])}}" method="post" class="button-group"> 
                                         @csrf
                                         @method("DELETE")
                                         {{-- <a href="{{route("users.edit", ['user'=>$user->id])}}" class="btn btn-warning btn-sm">Editar</a> --}}
                                         <input class="btn btn-danger btn-sm" type="submit" value="Eliminar"> 
                                     </form>
+                                    
                                 </td>
                             </tr>
                         @endforeach
@@ -61,8 +63,6 @@
             $('#table').DataTable({
                 stateSave: true,
                 pagingType: 'full_numbers',
-                scrollY: '200px',
-                scrollCollapse: true,
                 language: {
                     lengthMenu: 'Mostrando _MENU_ filas por página',
                     zeroRecords: 'Nada que mostrar',
